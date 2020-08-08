@@ -1,0 +1,19 @@
+{
+  "name": "non-scrollbar-googlechrome-extention",
+  "version": "0.1",
+  "description": "Google Chrome extension only for turning on/off the scroll bar.",
+  "permissions": ["storage"],
+  "background": {
+    "scripts": ["background.js"],
+    "persistent": false
+  },
+  "page_action": {
+    "default_icon": {
+      "32": "images/icon.png"
+    }
+  },
+  "icons": {
+    "48": "images/icon.png"
+  },
+  "manifest_version": 2
+}
