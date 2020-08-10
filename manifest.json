@@ -1,5 +1,5 @@
 {
-  "name": "non-scrollbar-googlechrome-extention",
+  "name": "non-scrollbar",
   "author": "msfukui",
   "version": "0.1",
   "description": "Google Chrome extension only for turning on/off the scroll bar.",
