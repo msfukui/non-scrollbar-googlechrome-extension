@@ -8,31 +8,25 @@ chrome.storage.sync.get('scrollbar', function(data) {
 
 scrollbarToggleSwitch.onchange = function(element) {
   const isScrollbar = element.target.checked
-  const noScrollbarStyle =
-      "var scrollbar = getComputedStyle(document.body, \'::-webkit-scrollbar\')\n"
-    + "var css = \'::-webkit-scrollbar { display: none; }\'\n"
-    + "var style = document.createElement(\'style\')\n"
-    + "if (scrollbar.getPropertyValue(\'display\') !== \'none\') {\n"
-    + "  style.appendChild(document.createTextNode(css))\n"
-    + "  document.getElementsByTagName(\'head\')[0].appendChild(style)\n"
-    + "}\n"
   const scrollbarStyle =
-      "var scrollbar = getComputedStyle(document.body, \'::-webkit-scrollbar\')\n"
-    + "var css = \"::-webkit-scrollbar { display: inline; }\"\n"
+      "var css = \'.non-scrollbar::-webkit-scrollbar { display: none; }\'\n"
     + "var style = document.createElement(\'style\')\n"
-    + "if (scrollbar.getPropertyValue(\'display\') === \'none\') {\n"
-    + "  style.appendChild(document.createTextNode(css))\n"
-    + "  document.getElementsByTagName(\'head\')[0].appendChild(style)\n"
+    + "style.appendChild(document.createTextNode(css))\n"
+    + "document.getElementsByTagName(\'head\')[0].appendChild(style)\n"
+  const addScrollbarStyle =
+      "if (! document.body.classList.contains(\'non-scrollbar\')) {\n"
+    + "  document.body.classList.add(\'non-scrollbar\')\n"
+    + "}\n"
+  const removeScrollbarStyle =
+      "if (document.body.classList.contains(\'non-scrollbar\')) {\n"
+    + "  document.body.classList.remove(\'non-scrollbar\')\n"
     + "}\n"
   let setStyle = ''
-  let message = ''
 
   if (isScrollbar) {
-    setStyle = noScrollbarStyle
-    message = 'on'
+    setStyle = scrollbarStyle + addScrollbarStyle
   } else {
-    setStyle = scrollbarStyle
-    message = 'off'
+    setStyle = scrollbarStyle + removeScrollbarStyle
   }
 
   chrome.tabs.query(
@@ -49,7 +43,4 @@ scrollbarToggleSwitch.onchange = function(element) {
       )
     }
   )
-  chrome.storage.sync.set({scrollbar: isScrollbar}, function() {
-    console.log('The scroll bar is turning ' + message + '.')
-  })
 }
